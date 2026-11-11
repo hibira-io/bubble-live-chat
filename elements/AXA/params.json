@@ -1,0 +1,72 @@
+{
+    "add_is_visible": true,
+    "category": "visual elements",
+    "default_dim": {
+        "height": 32,
+        "width": 140
+    },
+    "display": "Hibira Live Chat",
+    "events": {
+        "AXH": {
+            "caption": "the chat is ready",
+            "name": "ready"
+        },
+        "AXI": {
+            "caption": "an error occurs",
+            "name": "error"
+        }
+    },
+    "fields": {
+        "AXB": {
+            "caption": "Show chat button",
+            "default_val": true,
+            "doc": "The round chat button in the corner. Off: open the chat with the \"Open chat\" action from your own buttons.",
+            "editor": "Checkbox",
+            "name": "show_button",
+            "rank": 0
+        },
+        "AXC": {
+            "caption": "Colour",
+            "doc": "Optional, such as #e5484d. Empty uses the colour set on chat.hibira.io.",
+            "editor": "DynamicValue",
+            "name": "color",
+            "optional": true,
+            "rank": 1,
+            "value": "text"
+        },
+        "AXD": {
+            "caption": "Language",
+            "doc": "Optional: en, zh-TW, zh-CN, ja, ko, th or vi. Empty follows the visitor's browser.",
+            "editor": "DynamicValue",
+            "name": "language",
+            "optional": true,
+            "rank": 2,
+            "value": "text"
+        }
+    },
+    "icon": "ion-chatbubbles",
+    "property_applications": {
+        "MinWidth": true,
+        "resizable": true
+    },
+    "states": {
+        "AXF": {
+            "caption": "Ready",
+            "doc": "yes once the chat has loaded.",
+            "initialization_code": {
+                "fn": "function(properties, context) {\n    return false;\n}"
+            },
+            "name": "ready",
+            "value": "boolean"
+        },
+        "AXG": {
+            "caption": "Error",
+            "doc": "Why the chat did not load, if it did not.",
+            "initialization_code": {
+                "fn": "function(properties, context) {\n    return '';\n}"
+            },
+            "name": "error",
+            "value": "text"
+        }
+    }
+}

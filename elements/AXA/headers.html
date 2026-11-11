@@ -1,0 +1,69 @@
+<script>
+/* Hibira Live Chat for Bubble: loads the chat once per page with the
+   workspace and options of the first Hibira Live Chat element.
+   https://github.com/hibira-io/bubble-live-chat */
+(function () {
+  if (window.HibiraBubbleChat) return;
+  var BASE = 'https://chat.hibira.io';
+  var loading = false;
+  var ready = false;
+  var queue = [];
+  var listeners = [];
+
+  function attributes(props) {
+    var a = { 'data-workspace': String(props.workspace || '').trim() };
+    var color = String(props.color || '').trim();
+    if (/^#[0-9a-fA-F]{3,8}$/.test(color)) a['data-color'] = color;
+    var lang = String(props.language || '').trim();
+    if (/^[A-Za-z]{2}(-[A-Za-z]{2,4})?$/.test(lang)) a['data-lang'] = lang;
+    if (props.show_button === false) a['data-launcher'] = 'none';
+    return a;
+  }
+
+  function call(fn) {
+    if (ready && window.HibiraLiveChat) fn(window.HibiraLiveChat);
+    else queue.push(fn);
+  }
+
+  // load returns '' or why the chat cannot load.
+  function load(props) {
+    var a = attributes(props);
+    if (!/^ws_[A-Za-z0-9_-]{1,64}$/.test(a['data-workspace'])) {
+      return 'Paste your Workspace ID (ws_...) in Plugins > Hibira Live Chat. It is in Settings > Widget on chat.hibira.io.';
+    }
+    if (loading) return '';
+    loading = true;
+    var s = document.createElement('script');
+    s.src = BASE + '/w/v1.js';
+    s.async = true;
+    for (var k in a) s.setAttribute(k, a[k]);
+    s.onerror = function () { notify('The chat could not load from chat.hibira.io.'); };
+    document.body.appendChild(s);
+    return '';
+  }
+
+  function notify(error) {
+    listeners.slice().forEach(function (fn) { fn(error); });
+  }
+
+  window.addEventListener('hibira-livechat:ready', function () {
+    ready = true;
+    var q = queue;
+    queue = [];
+    q.forEach(function (fn) { fn(window.HibiraLiveChat); });
+    notify('');
+  });
+
+  window.HibiraBubbleChat = {
+    attributes: attributes,
+    load: load,
+    isReady: function () { return ready; },
+    onChange: function (fn) { listeners.push(fn); },
+    offChange: function (fn) { var i = listeners.indexOf(fn); if (i >= 0) listeners.splice(i, 1); },
+    open: function (topic) { call(function (c) { c.open(topic === 'sales' ? { topic: 'sales' } : undefined); }); },
+    close: function () { call(function (c) { c.close(); }); },
+    identify: function (u) { call(function (c) { c.identify(u); }); },
+    forget: function () { call(function (c) { c.logout(); }); }
+  };
+})();
+</script>

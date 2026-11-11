@@ -1,0 +1,5 @@
+{
+    "caption": "Forget visitor",
+    "doc": "Run on log out: the chat starts over as an anonymous visitor.",
+    "fields": {}
+}

@@ -1,0 +1,244 @@
+{
+  "dependencies": {
+    "use_jquery": true,
+    "plugin_api_version": 4
+  },
+  "meta_data": {
+    "categories": {
+      "0": "productivity",
+      "1": "social network",
+      "2": "technical"
+    },
+    "data_tracked": false,
+    "demo_page": "",
+    "description": "A live chat bubble for your Bubble app, connected to Hibira Live Chat: AI answers from your help articles, translation both ways (English, Chinese, Japanese, Korean, Thai, Vietnamese), one inbox for your team, verified signed-in users, and open or close the chat from any workflow. Free plan available.",
+    "designed_for": "both",
+    "license": "open_source",
+    "link": "https://chat.hibira.io",
+    "name": "Hibira Live Chat",
+    "plugin_instructions": "Hibira Live Chat adds a chat bubble to your Bubble app. Visitors write to you and your team answers from one inbox at https://chat.hibira.io: AI answers from your help articles, translation both ways, assignment and notes. Free plan available.\n\nSETUP\n1. Create a free account at https://chat.hibira.io.\n2. In Settings > Widget there, copy your Workspace ID (ws_...) and add your Bubble domains to the sites, for example https://yourapp.bubbleapps.io and your custom domain. The chat only shows on listed sites.\n3. In Bubble, open Plugins > Hibira Live Chat and paste the Workspace ID.\n4. Drop a \"Hibira Live Chat\" element on each page that should have the chat (a reusable header or footer works). It draws nothing itself; the chat button appears in the corner.\n\nOPEN THE CHAT FROM YOUR OWN BUTTONS\nIn a workflow, use the element's \"Open chat\" action (Topic sales marks a new conversation as a sales question) or \"Close chat\". Untick \"Show chat button\" to use only your own buttons.\n\nSIGNED-IN USERS (VERIFIED VISITORS, STARTER PLAN AND UP)\n5. Create an identity secret under Settings > Widget > Verified visitors on chat.hibira.io and paste it into Identity secret here.\n6. Add a workflow: When Hibira Live Chat the chat is ready, Only when Current User is logged in.\n   Step 1: \"Hibira Live Chat - Sign user\" with User ID = Current User's unique id.\n   Step 2: the element's \"Identify visitor\" with User ID = Current User's unique id, User hash = Result of step 1's User hash, Name and Email.\n   Your team then sees them as verified in the inbox, with one conversation on every device.\n7. When the user logs out, run the element's \"Forget visitor\".\n\nDocs and source: https://github.com/hibira-io/bubble-live-chat\n",
+    "sa_node_version": 22
+  },
+  "editor_counter": 2000,
+  "shared_keys": {
+    "AZM": {
+      "caption": "Workspace ID",
+      "type": "client_safe"
+    },
+    "AZN": {
+      "caption": "Identity secret",
+      "type": "secure"
+    }
+  },
+  "plugin_elements": {
+    "AXA": {
+      "add_is_visible": true,
+      "category": "visual elements",
+      "default_dim": {
+        "height": 32,
+        "width": 140
+      },
+      "display": "Hibira Live Chat",
+      "events": {
+        "AXH": {
+          "caption": "the chat is ready",
+          "name": "ready"
+        },
+        "AXI": {
+          "caption": "an error occurs",
+          "name": "error"
+        }
+      },
+      "fields": {
+        "AXB": {
+          "caption": "Show chat button",
+          "default_val": true,
+          "doc": "The round chat button in the corner. Off: open the chat with the \"Open chat\" action from your own buttons.",
+          "editor": "Checkbox",
+          "name": "show_button",
+          "rank": 0
+        },
+        "AXC": {
+          "caption": "Colour",
+          "doc": "Optional, such as #e5484d. Empty uses the colour set on chat.hibira.io.",
+          "editor": "DynamicValue",
+          "name": "color",
+          "optional": true,
+          "rank": 1,
+          "value": "text"
+        },
+        "AXD": {
+          "caption": "Language",
+          "doc": "Optional: en, zh-TW, zh-CN, ja, ko, th or vi. Empty follows the visitor's browser.",
+          "editor": "DynamicValue",
+          "name": "language",
+          "optional": true,
+          "rank": 2,
+          "value": "text"
+        }
+      },
+      "icon": "ion-chatbubbles",
+      "property_applications": {
+        "MinWidth": true,
+        "resizable": true
+      },
+      "states": {
+        "AXF": {
+          "caption": "Ready",
+          "doc": "yes once the chat has loaded.",
+          "initialization_code": {
+            "fn": "function(properties, context) {\n    return false;\n}"
+          },
+          "name": "ready",
+          "value": "boolean"
+        },
+        "AXG": {
+          "caption": "Error",
+          "doc": "Why the chat did not load, if it did not.",
+          "initialization_code": {
+            "fn": "function(properties, context) {\n    return '';\n}"
+          },
+          "name": "error",
+          "value": "text"
+        }
+      },
+      "platform_type": "web",
+      "code": {
+        "initialize": {
+          "fn": "function(instance, context) {\n    instance.data.ready = false;\n    if (!window.HibiraBubbleChat) {\n        instance.publishState('error', 'The Hibira Live Chat runtime did not load.');\n        return;\n    }\n    instance.data.onChange = function (error) {\n        if (error) {\n            instance.publishState('error', error);\n            instance.triggerEvent('error');\n            return;\n        }\n        instance.data.announced = true;\n        instance.publishState('error', '');\n        instance.publishState('ready', true);\n        instance.triggerEvent('ready');\n    };\n    window.HibiraBubbleChat.onChange(instance.data.onChange);\n    instance.data.ready = true;\n}\n"
+        },
+        "update": {
+          "fn": "function(instance, properties, context) {\n    if (!instance.data.ready) return;\n    var chat = window.HibiraBubbleChat;\n    var error = chat.load({\n        workspace: context.keys['Workspace ID'],\n        show_button: properties.show_button,\n        color: properties.color,\n        language: properties.language\n    });\n    if (error) {\n        instance.publishState('error', error);\n        instance.triggerEvent('error');\n    } else if (chat.isReady() && !instance.data.announced) {\n        instance.data.announced = true;\n        instance.publishState('ready', true);\n        instance.triggerEvent('ready');\n    }\n}\n"
+        },
+        "preview": {
+          "fn": "function(instance, properties) {\n    instance.canvas.append($('<div></div>').text('Hibira Live Chat').css({\n        font: '12px/1.4 system-ui, sans-serif', color: '#7f1d1d', background: '#fee2e2',\n        border: '1px dashed #f87171', borderRadius: '6px', padding: '6px 8px',\n        height: '100%', boxSizing: 'border-box', overflow: 'hidden', whiteSpace: 'nowrap'\n    }));\n}\n"
+        },
+        "reset": {
+          "fn": "function(instance, context) {\n    if (instance.data.ready && instance.data.onChange) window.HibiraBubbleChat.offChange(instance.data.onChange);\n}\n"
+        }
+      },
+      "headers": {
+        "snippet": "<script>\n/* Hibira Live Chat for Bubble: loads the chat once per page with the\n   workspace and options of the first Hibira Live Chat element.\n   https://github.com/hibira-io/bubble-live-chat */\n(function () {\n  if (window.HibiraBubbleChat) return;\n  var BASE = 'https://chat.hibira.io';\n  var loading = false;\n  var ready = false;\n  var queue = [];\n  var listeners = [];\n\n  function attributes(props) {\n    var a = { 'data-workspace': String(props.workspace || '').trim() };\n    var color = String(props.color || '').trim();\n    if (/^#[0-9a-fA-F]{3,8}$/.test(color)) a['data-color'] = color;\n    var lang = String(props.language || '').trim();\n    if (/^[A-Za-z]{2}(-[A-Za-z]{2,4})?$/.test(lang)) a['data-lang'] = lang;\n    if (props.show_button === false) a['data-launcher'] = 'none';\n    return a;\n  }\n\n  function call(fn) {\n    if (ready && window.HibiraLiveChat) fn(window.HibiraLiveChat);\n    else queue.push(fn);\n  }\n\n  // load returns '' or why the chat cannot load.\n  function load(props) {\n    var a = attributes(props);\n    if (!/^ws_[A-Za-z0-9_-]{1,64}$/.test(a['data-workspace'])) {\n      return 'Paste your Workspace ID (ws_...) in Plugins > Hibira Live Chat. It is in Settings > Widget on chat.hibira.io.';\n    }\n    if (loading) return '';\n    loading = true;\n    var s = document.createElement('script');\n    s.src = BASE + '/w/v1.js';\n    s.async = true;\n    for (var k in a) s.setAttribute(k, a[k]);\n    s.onerror = function () { notify('The chat could not load from chat.hibira.io.'); };\n    document.body.appendChild(s);\n    return '';\n  }\n\n  function notify(error) {\n    listeners.slice().forEach(function (fn) { fn(error); });\n  }\n\n  window.addEventListener('hibira-livechat:ready', function () {\n    ready = true;\n    var q = queue;\n    queue = [];\n    q.forEach(function (fn) { fn(window.HibiraLiveChat); });\n    notify('');\n  });\n\n  window.HibiraBubbleChat = {\n    attributes: attributes,\n    load: load,\n    isReady: function () { return ready; },\n    onChange: function (fn) { listeners.push(fn); },\n    offChange: function (fn) { var i = listeners.indexOf(fn); if (i >= 0) listeners.splice(i, 1); },\n    open: function (topic) { call(function (c) { c.open(topic === 'sales' ? { topic: 'sales' } : undefined); }); },\n    close: function () { call(function (c) { c.close(); }); },\n    identify: function (u) { call(function (c) { c.identify(u); }); },\n    forget: function () { call(function (c) { c.logout(); }); }\n  };\n})();\n</script>\n"
+      },
+      "actions": {
+        "AXJ": {
+          "caption": "Open chat",
+          "doc": "Open the chat panel.",
+          "fields": {
+            "AXK": {
+              "caption": "Topic",
+              "doc": "Optional. sales marks a new conversation as a sales question.",
+              "editor": "DynamicValue",
+              "name": "topic",
+              "optional": true,
+              "rank": 0,
+              "value": "text"
+            }
+          },
+          "code": {
+            "fn": "function(instance, properties, context) {\n    if (instance.data.ready) window.HibiraBubbleChat.open(String(properties.topic || '').trim());\n}\n"
+          }
+        },
+        "AXL": {
+          "caption": "Close chat",
+          "doc": "Close the chat panel.",
+          "fields": {},
+          "code": {
+            "fn": "function(instance, properties, context) {\n    if (instance.data.ready) window.HibiraBubbleChat.close();\n}\n"
+          }
+        },
+        "AXM": {
+          "caption": "Identify visitor",
+          "doc": "Show the signed-in user as verified in the inbox (Starter plan and up). Get the User hash from \"Hibira Live Chat - Sign user\" in the same workflow.",
+          "fields": {
+            "AXN": {
+              "caption": "User ID",
+              "doc": "Current User's unique id: the same value you signed.",
+              "editor": "DynamicValue",
+              "name": "user_id",
+              "rank": 0,
+              "value": "text"
+            },
+            "AXO": {
+              "caption": "User hash",
+              "doc": "Result of \"Hibira Live Chat - Sign user\".",
+              "editor": "DynamicValue",
+              "name": "user_hash",
+              "rank": 1,
+              "value": "text"
+            },
+            "AXP": {
+              "caption": "Name",
+              "doc": "Optional. Shown to your team.",
+              "editor": "DynamicValue",
+              "name": "name",
+              "optional": true,
+              "rank": 2,
+              "value": "text"
+            },
+            "AXQ": {
+              "caption": "Email",
+              "doc": "Optional. Shown to your team.",
+              "editor": "DynamicValue",
+              "name": "email",
+              "optional": true,
+              "rank": 3,
+              "value": "text"
+            }
+          },
+          "code": {
+            "fn": "function(instance, properties, context) {\n    if (!instance.data.ready) return;\n    var id = String(properties.user_id || '').trim();\n    var hash = String(properties.user_hash || '').trim();\n    if (!id || !hash) {\n        instance.publishState('error', 'Identify visitor needs User ID and User hash.');\n        instance.triggerEvent('error');\n        return;\n    }\n    window.HibiraBubbleChat.identify({ id: id, hash: hash, name: String(properties.name || ''), email: String(properties.email || '') });\n}\n"
+          }
+        },
+        "AXR": {
+          "caption": "Forget visitor",
+          "doc": "Run on log out: the chat starts over as an anonymous visitor.",
+          "fields": {},
+          "code": {
+            "fn": "function(instance, properties, context) {\n    if (instance.data.ready) window.HibiraBubbleChat.forget();\n}\n"
+          }
+        }
+      }
+    }
+  },
+  "plugin_actions": {
+    "AYA": {
+      "category": "plugins",
+      "display": "Hibira Live Chat - Sign user",
+      "doc": "Signs a user ID with your identity secret, on the server, for the Hibira Live Chat element's \"Identify visitor\". The secret never reaches the browser.",
+      "fields": {
+        "AYB": {
+          "caption": "User ID",
+          "doc": "Current User's unique id.",
+          "editor": "DynamicValue",
+          "name": "user_id",
+          "rank": 0,
+          "value": "text"
+        }
+      },
+      "return_value": {
+        "AYC": {
+          "caption": "User hash",
+          "name": "user_hash",
+          "rank": 0,
+          "value": "text"
+        },
+        "AYD": {
+          "caption": "Error message",
+          "name": "error",
+          "rank": 1,
+          "value": "text"
+        }
+      },
+      "type": "server_side",
+      "code": {
+        "server": {
+          "fn": "async function(properties, context) {\n  const crypto = require('crypto');\n  const secret = String((context.keys || {})['Identity secret'] || '').trim();\n  const userId = String(properties.user_id || '').trim();\n  if (!secret) return { user_hash: '', error: 'Paste the identity secret (lcid_...) in Plugins > Hibira Live Chat. Create it under Settings > Widget > Verified visitors on chat.hibira.io.' };\n  if (!userId) return { user_hash: '', error: 'User ID is empty: use Current User\\'s unique id, and run this only when the user is logged in.' };\n  return { user_hash: crypto.createHmac('sha256', secret).update(userId).digest('hex'), error: '' };\n}\n"
+        },
+        "client": {
+          "fn": "function(properties, context) {\n\n}\n"
+        }
+      }
+    }
+  }
+}
