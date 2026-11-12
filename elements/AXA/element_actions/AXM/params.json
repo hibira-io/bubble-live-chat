@@ -1,0 +1,40 @@
+{
+    "caption": "Identify visitor",
+    "doc": "Show the signed-in user as verified in the inbox (Starter plan and up). Get the User hash from \"Hibira Live Chat - Sign user\" in the same workflow.",
+    "fields": {
+        "AXN": {
+            "caption": "User ID",
+            "doc": "Current User's unique id: the same value you signed.",
+            "editor": "DynamicValue",
+            "name": "user_id",
+            "rank": 0,
+            "value": "text"
+        },
+        "AXO": {
+            "caption": "User hash",
+            "doc": "Result of \"Hibira Live Chat - Sign user\".",
+            "editor": "DynamicValue",
+            "name": "user_hash",
+            "rank": 1,
+            "value": "text"
+        },
+        "AXP": {
+            "caption": "Name",
+            "doc": "Optional. Shown to your team.",
+            "editor": "DynamicValue",
+            "name": "name",
+            "optional": true,
+            "rank": 2,
+            "value": "text"
+        },
+        "AXQ": {
+            "caption": "Email",
+            "doc": "Optional. Shown to your team.",
+            "editor": "DynamicValue",
+            "name": "email",
+            "optional": true,
+            "rank": 3,
+            "value": "text"
+        }
+    }
+}

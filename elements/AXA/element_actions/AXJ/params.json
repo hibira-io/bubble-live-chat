@@ -1,0 +1,15 @@
+{
+    "caption": "Open chat",
+    "doc": "Open the chat panel.",
+    "fields": {
+        "AXK": {
+            "caption": "Topic",
+            "doc": "Optional. sales marks a new conversation as a sales question.",
+            "editor": "DynamicValue",
+            "name": "topic",
+            "optional": true,
+            "rank": 0,
+            "value": "text"
+        }
+    }
+}

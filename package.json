@@ -1,0 +1,13 @@
+{
+  "name": "hibira-bubble-live-chat",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Hibira Live Chat plugin for Bubble: a live chat bubble connected to chat.hibira.io",
+  "homepage": "https://chat.hibira.io",
+  "repository": "github:hibira-io/bubble-live-chat",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "node tools/editor-raw.mjs --check && node --test test/*.test.mjs"
+  }
+}

@@ -1,0 +1,17 @@
+{
+    "categories": {
+        "0": "productivity",
+        "1": "social network",
+        "2": "technical"
+    },
+    "data_tracked": false,
+    "demo_page": "",
+    "description": "A live chat bubble for your Bubble app, connected to Hibira Live Chat: AI answers from your help articles, translation both ways (English, Chinese, Japanese, Korean, Thai, Vietnamese), one inbox for your team, verified signed-in users, and open or close the chat from any workflow. Free plan available.",
+    "designed_for": "both",
+    "image": "",
+    "license": "open_source",
+    "link": "https://chat.hibira.io",
+    "name": "Hibira Live Chat",
+    "plugin_instructions": "Hibira Live Chat adds a chat bubble to your Bubble app. Visitors write to you and your team answers from one inbox at https://chat.hibira.io: AI answers from your help articles, translation both ways, assignment and notes. Free plan available.\n\nSETUP\n1. Create a free account at https://chat.hibira.io.\n2. In Settings > Widget there, copy your Workspace ID (ws_...) and add your Bubble domains to the sites, for example https://yourapp.bubbleapps.io and your custom domain. The chat only shows on listed sites.\n3. In Bubble, open Plugins > Hibira Live Chat and paste the Workspace ID.\n4. Drop a \"Hibira Live Chat\" element on each page that should have the chat (a reusable header or footer works). It draws nothing itself; the chat button appears in the corner.\n\nOPEN THE CHAT FROM YOUR OWN BUTTONS\nIn a workflow, use the element's \"Open chat\" action (Topic sales marks a new conversation as a sales question) or \"Close chat\". Untick \"Show chat button\" to use only your own buttons.\n\nSIGNED-IN USERS (VERIFIED VISITORS, STARTER PLAN AND UP)\n5. Create an identity secret under Settings > Widget > Verified visitors on chat.hibira.io and paste it into Identity secret here.\n6. Add a workflow: When Hibira Live Chat the chat is ready, Only when Current User is logged in.\n   Step 1: \"Hibira Live Chat - Sign user\" with User ID = Current User's unique id.\n   Step 2: the element's \"Identify visitor\" with User ID = Current User's unique id, User hash = Result of step 1's User hash, Name and Email.\n   Your team then sees them as verified in the inbox, with one conversation on every device.\n7. When the user logs out, run the element's \"Forget visitor\".\n\nDocs and source: https://github.com/hibira-io/bubble-live-chat\n",
+    "sa_node_version": 22
+}

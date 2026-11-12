@@ -1,0 +1,30 @@
+{
+    "category": "plugins",
+    "display": "Hibira Live Chat - Sign user",
+    "doc": "Signs a user ID with your identity secret, on the server, for the Hibira Live Chat element's \"Identify visitor\". The secret never reaches the browser.",
+    "fields": {
+        "AYB": {
+            "caption": "User ID",
+            "doc": "Current User's unique id.",
+            "editor": "DynamicValue",
+            "name": "user_id",
+            "rank": 0,
+            "value": "text"
+        }
+    },
+    "return_value": {
+        "AYC": {
+            "caption": "User hash",
+            "name": "user_hash",
+            "rank": 0,
+            "value": "text"
+        },
+        "AYD": {
+            "caption": "Error message",
+            "name": "error",
+            "rank": 1,
+            "value": "text"
+        }
+    },
+    "type": "server_side"
+}
