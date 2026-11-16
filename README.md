@@ -11,7 +11,7 @@ one inbox for your team and verified signed-in users. A separate plugin from
 ## Setup
 
 1. Create a free account at [chat.hibira.io](https://chat.hibira.io).
-2. In **Settings › Widget** there, copy the **Workspace ID** (`ws_…`) and add your Bubble domains to the sites,
+2. In [**Settings › Widget**](https://hibira.io/portal/live-chat/widget), copy the **Workspace ID** (`ws_…`) and add your Bubble domains to the sites,
    such as `https://yourapp.bubbleapps.io` and your custom domain. The chat shows only on listed sites.
 3. In Bubble, install **Hibira Live Chat**, then paste the Workspace ID on the Plugins tab.
 4. Drop a **Hibira Live Chat** element on each page that should have the chat (a reusable header works). It draws
@@ -20,7 +20,7 @@ one inbox for your team and verified signed-in users. A separate plugin from
 | Field | What it does |
 | --- | --- |
 | Show chat button | The round button in the corner. Off: open the chat only from your own buttons. |
-| Colour | Optional, such as `#e5484d`. Empty uses the colour set on chat.hibira.io. |
+| Colour | Optional, such as `#e5484d`. Empty uses the colour set in Hibira Live Chat. |
 | Language | Optional: `en`, `zh-TW`, `zh-CN`, `ja`, `ko`, `th`, `vi`. Empty follows the visitor's browser. |
 
 **States:** Ready, Error. **Events:** the chat is ready, an error occurs.
@@ -29,7 +29,7 @@ one inbox for your team and verified signed-in users. A separate plugin from
 
 ## Signed-in users (verified visitors)
 
-Starter plan and up. Create an identity secret under **Settings › Widget › Verified visitors** on chat.hibira.io and
+Starter plan and up. Create an identity secret under **Settings › Widget › Verified visitors** in [Hibira Live Chat](https://hibira.io/portal/live-chat/widget) and
 paste it into **Identity secret** (private key; it never reaches the browser). Then:
 
 > When **Hibira Live Chat A** *the chat is ready*, Only when Current User is logged in

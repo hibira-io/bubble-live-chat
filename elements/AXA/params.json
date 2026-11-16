@@ -27,7 +27,7 @@
         },
         "AXC": {
             "caption": "Colour",
-            "doc": "Optional, such as #e5484d. Empty uses the colour set on chat.hibira.io.",
+            "doc": "Optional, such as #e5484d. Empty uses the colour set in Hibira Live Chat.",
             "editor": "DynamicValue",
             "name": "color",
             "optional": true,
