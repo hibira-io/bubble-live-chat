@@ -29,7 +29,7 @@
   function load(props) {
     var a = attributes(props);
     if (!/^ws_[A-Za-z0-9_-]{1,64}$/.test(a['data-workspace'])) {
-      return 'Paste your Workspace ID (ws_...) in Plugins > Hibira Live Chat. It is in Settings > Widget on chat.hibira.io.';
+      return 'Paste your Workspace ID (ws_...) in Plugins > Hibira Live Chat. It is in Settings > Widget in Hibira Live Chat: https://hibira.io/portal/live-chat/widget.';
     }
     if (loading) return '';
     loading = true;
